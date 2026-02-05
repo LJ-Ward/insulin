@@ -1,7 +1,6 @@
 ###############################
 ##  PQN normalisation script ##
 ###############################
-
 ## --------- SETTINGS (EDIT THESE) ---------
 
 # Path to your xcms output file (xlsx or csv)
@@ -30,13 +29,9 @@ reference_meta_value     <- "training"
 # Small value added to intensities before PQN (normally 0)
 epsilon <- 0
 
-## --------- END OF SETTINGS ---------
-
-
 #############################################
 ##           Load / Install Packages       ##
 #############################################
-
 if (grepl("\\.xlsx?$", input_file, ignore.case = TRUE)) {
   if (!requireNamespace("readxl", quietly = TRUE)) {
     install.packages("readxl")
@@ -48,7 +43,6 @@ if (grepl("\\.xlsx?$", input_file, ignore.case = TRUE)) {
 #############################################
 ##                 Read Data               ##
 #############################################
-
 if (grepl("\\.xlsx?$", input_file, ignore.case = TRUE)) {
   raw_data <- readxl::read_excel(input_file, sheet = sheet)
 } else {
@@ -83,7 +77,6 @@ intensities  <- feature_data[, first_sample_col:ncol(feature_data), drop = FALSE
 #############################################
 ##        Convert Intensities to Numeric   ##
 #############################################
-
 intensities_num <- as.data.frame(
   lapply(intensities, function(x) as.numeric(as.character(x))),
   check.names = FALSE
@@ -97,7 +90,6 @@ if (!is.null(epsilon) && epsilon != 0) {
 #############################################
 ##    Build Reference Matrix (set=training)##
 #############################################
-
 if (is.null(sample_meta)) {
   stop("No sample_meta; cannot select reference by metadata.")
 }
@@ -140,7 +132,6 @@ reference_spectrum[reference_spectrum == 0] <- NA
 #############################################
 ##      Compute PQN Dilution Factors       ##
 #############################################
-
 quotients <- sweep(intensities_num, 1, reference_spectrum, "/")
 dilution_factors <- apply(quotients, 2, median, na.rm = TRUE)
 
@@ -148,14 +139,12 @@ dilution_factors <- apply(quotients, 2, median, na.rm = TRUE)
 #############################################
 ##        Apply PQN Normalisation          ##
 #############################################
-
 pqn_intensities <- sweep(intensities_num, 2, dilution_factors, "/")
 
 
 #############################################
 ##         Reassemble & Write Output       ##
 #############################################
-
 pqn_intensities_out <- as.data.frame(
   lapply(pqn_intensities, function(x) signif(x, 6)),
   check.names = FALSE
