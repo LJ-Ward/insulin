@@ -1,13 +1,11 @@
 ############################################
 ## MULTI-CLASS ROC
 ############################################
-
 library(pROC)
 
 ############################################
 ## LOAD
 ############################################
-
 df <- read.csv("df1.csv",
                sep=";",
                stringsAsFactors=FALSE)
@@ -22,7 +20,6 @@ df$insulin <- as.numeric(df$insulin_score)
 ############################################
 ## COLOURS
 ############################################
-
 cols <- c(
   control="#1F77B4",
   hyper="#009E73",
@@ -32,7 +29,6 @@ cols <- c(
 ############################################
 ## EMPTY PLOT
 ############################################
-
 plot(NA, NA,
      xlim=c(0,1), ylim=c(0,1),
      xlab="1 - Specificity",
@@ -44,7 +40,6 @@ abline(0,1,lty=2,col="grey70")
 ############################################
 ## FUNCTION TO DRAW ONE ROC
 ############################################
-
 drawROC <- function(truth, score, col){
   
   r <- roc(truth, score, direction="<", quiet=TRUE)
@@ -72,7 +67,6 @@ drawROC <- function(truth, score, col){
 ############################################
 ## DRAW ALL THREE
 ############################################
-
 r_control <- drawROC(df$trueID=="control", df$control, cols["control"])
 r_hyper   <- drawROC(df$trueID=="hyper",   df$hyper,   cols["hyper"])
 r_insulin <- drawROC(df$trueID=="insulin", df$insulin, cols["insulin"])
@@ -80,7 +74,6 @@ r_insulin <- drawROC(df$trueID=="insulin", df$insulin, cols["insulin"])
 ############################################
 ## TEXT
 ############################################
-
 addText <- function(r, label, col, y){
   ciA <- ci.auc(r)
   text(0.55, y,
@@ -99,7 +92,6 @@ addText(r_insulin,"insulin",cols["insulin"],0.11)
 ############################################
 ## LEGEND
 ############################################
-
 legend("bottomright",
        legend=c("control","hyper","insulin"),
        col=cols,
