@@ -32,7 +32,6 @@ library(SummarizedExperiment)
 # SummarizedExperiment::assay(x)
 #
 ##############################################################################
-
 x <- commandArgs(trailingOnly = TRUE)
 if (length(x) > 0) {
   settings_file <- x[1]
@@ -174,7 +173,6 @@ log("Done")
 # XCMS workflow
 #
 ###############################
-
 #
 # Finding peaks
 log("Running findChromPeaks")
