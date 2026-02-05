@@ -18,7 +18,7 @@ n_sample_meta_rows <- 2
 
 # Name of the FIRST sample-intensity column
 # (for your example: "QC01_RPpos.mzML")
-first_sample_col_name <- "QC01.mzML"
+first_sample_col_name <- "s001.mzML"
 
 # Row label (first column) used to define the reference group
 # and the value in that row to use as reference
